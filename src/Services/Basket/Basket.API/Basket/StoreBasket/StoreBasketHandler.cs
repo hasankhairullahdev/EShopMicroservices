@@ -10,7 +10,7 @@
             RuleFor(x => x.Cart).NotNull().WithMessage("Cart can not be null");
             RuleFor(x => x.Cart.UserName).NotEmpty().WithMessage("UserName is required");
         }
-        public class StoreBasketCommandHandler : ICommandHandler<StoreBasketCommand, StoreBasketResult>
+        public class StoreBasketCommandHandler (IBasketRepository repository) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
         {
             public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
             {
@@ -18,8 +18,9 @@
 
                 //TODO: store basket in database (use Marten upsert - id exist = update, if not exist )
                 //TODO: update cache
+                await repository.StoreBasket(command.Cart, cancellationToken);
 
-                return new StoreBasketResult("swd");
+                return new StoreBasketResult(command.Cart.UserName);
             }
         }
     }
