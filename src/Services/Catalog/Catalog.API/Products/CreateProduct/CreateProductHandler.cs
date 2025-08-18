@@ -37,7 +37,7 @@ namespace Catalog.API.Products.CreateProduct
 
             //return result
 
-            return new CreateProductResult(Guid.NewGuid());
+            return new CreateProductResult(product.Id);
         }
     }
 }
